@@ -196,6 +196,173 @@
     ['Apologise with “sorry”.','pakhalta'],['Reply “yes, a little” about how much you speak.','he khacha']
   ];
   dialogues.forEach(([p,a])=>{addQuiz('conversation',p+' Choose the lesson phrase.',a,phrases,conversation.find(c=>c.latin===a).note,'dialogue-situation');addPractice('conversation',p+' Write the lesson phrase.',[a],conversation.find(c=>c.latin===a).note,'dialogue-situation');});
+
+  // Extra exercises reuse the taught spellings, places and phrases. Keep the
+  // context in each prompt so gender, addressee and word order have one answer.
+  alphabet.forEach((c,i)=>{
+    for(const [offset,label] of [[-1,'before'],[1,'after']]){
+      const neighbour=alphabet[i+offset];if(!neighbour)continue;
+      const prompt=`In alphabet order, which letter comes immediately ${label} ${c.latin}?`;
+      const explanation=`${label==='before'?neighbour.latin+' → '+c.latin:c.latin+' → '+neighbour.latin}.`;
+      addQuiz('alphabet',prompt,neighbour.latin,names,explanation,'alphabet-order','roman');
+      addPractice('alphabet',prompt+' Type its name.',[neighbour.latin],explanation,'alphabet-order','roman');
+    }
+    const bare=[...key(toSyriac(c.example))].filter(ch=>/[\u0710-\u072f]/.test(ch));
+    for(const [index,label] of [[0,'first'],[bare.length-1,'last']]){
+      const letter=bare[index],name=alphabet.find(a=>a.syriac===letter).latin;
+      const prompt=`What is the ${label} written letter in ${toSyriac(c.example)} (${c.example})?`;
+      const explanation=`The ${label} letter of ${c.example} is ${name}, ${letter}. Read Syriac from right to left; keep silent written letters.`;
+      addQuiz('alphabet',prompt,letter,letters,explanation,'word-edge-letter','syriac');
+      addPractice('alphabet',prompt+' Type the letter name.',[name],explanation,'word-edge-letter','roman');
+    }
+    bare.forEach((letter,index)=>{
+      const spelling='\u2067'+bare.map((ch,j)=>j===index?'___':ch).join(' ')+'\u2069',name=alphabet.find(a=>a.syriac===letter).latin;
+      const prompt=`Spell ${c.example} (${c.english}): ${spelling}. Which written letter fills the gap?`;
+      const explanation=`${toSyriac(c.example)} spells ${c.example}. Written letter ${index+1} is ${name}, ${letter}; count from the right.`;
+      addQuiz('alphabet',prompt,letter,letters,explanation,'word-spelling','syriac');
+      addPractice('alphabet',prompt+' Type the letter name.',[name],explanation,'word-spelling','roman');
+    });
+  });
+
+  values.forEach(n=>{
+    const roman=numberWord(n),digits=n.toLocaleString('en-AU');
+    addQuiz('numbers',`Read ${toSyriac(roman)}. Choose its Roman counting form.`,roman,numberWords,`${digits} is ${roman}.`,'number-script-reading','roman');
+    addPractice('numbers',`Read ${toSyriac(roman)}. Type its Roman counting form.`,[roman],`This is ${digits}.`,'number-script-reading','roman');
+  });
+  for(let n=1;n<=100;n++){
+    for(const [offset,label] of [[-1,'before'],[1,'after']]){
+      const target=n+offset;if(target<1||target>100)continue;
+      const answer=numberWord(target),prompt=`Count by ones. Which Sureth number comes immediately ${label} ${numberWord(n)} (${n})?`;
+      const explanation=`${label==='before'?target+' → '+n:n+' → '+target}. ${target} = ${answer}.`;
+      addQuiz('numbers',prompt,answer,numberWords,explanation,'counting-neighbour');
+      addPractice('numbers',prompt,[answer],`The missing number is ${target}.`,'counting-neighbour');
+    }
+    if(n>1&&n<100){
+      const prompt=`Count by ones and fill the gap: ${numberWord(n-1)}, ___, ${numberWord(n+1)}.`;
+      addQuiz('numbers',prompt,numberWord(n),numberWords,`The sequence is ${n-1}, ${n}, ${n+1}. ${n} = ${numberWord(n)}.`,'number-sequence');
+      addPractice('numbers',prompt,[numberWord(n)],`The missing number is ${n}.`,'number-sequence');
+    }
+  }
+
+  const roleScenarios=[
+    ['ana',['You are the speaker, talking about yourself.','Rami says “I”. Choose Rami’s pronoun.','A woman speaks about herself as “I”.','A man introduces himself using “I”.','You describe your own location using “I”.','One child speaks about themself as “I”.']],
+    ['at',['You speak directly to one woman.','You speak directly to one man.','Rami speaks directly to one classmate.','You ask one child a question.','You tell one visitor where they are.','You address one teacher directly.']],
+    ['aw',['You talk about one man who is not being addressed.','You talk about a boy as “he”.','A woman talks about Rami as “he”.','You describe one male visitor as “he”.','You refer to a male teacher as “he”.','You refer to a masculine thing as “it”.']],
+    ['ay',['You talk about one woman who is not being addressed.','You talk about a girl as “she”.','Rami talks about a woman as “she”.','You describe one female visitor as “she”.','You refer to a female teacher as “she”.','You refer to a feminine thing as “it”.']],
+    ['akhnan',['You talk about yourself and Rami together.','Rami talks about himself and his friends together.','You describe a group that includes you.','Two speakers talk about themselves together.','You talk about yourself and one visitor together.','You and your classmates describe yourselves as “we”.']],
+    ['akhtun',['You speak directly to two women together.','You speak directly to two men together.','You speak directly to three classmates.','Rami asks several visitors a question together.','You address all the children in a group.','You tell two teachers where they are.']],
+    ['ani',['You talk about two women who are not being addressed.','You talk about two men who are not being addressed.','You describe a group that does not include you or your listener.','Rami refers to some classmates as “they”.','You refer to several visitors as “they”.','You refer to two children as “they”.']]
+  ];
+  roleScenarios.forEach(([answer,contexts])=>contexts.forEach(context=>{
+    const explanation=pronouns.find(c=>c.latin===answer).note;
+    addQuiz('pronouns',context+' Choose the pronoun.',answer,pronounChoices,explanation,'speaker-and-listener');
+    addPractice('pronouns',context+' Write the pronoun.',[answer],explanation,'speaker-and-listener');
+  }));
+  const pronounPairs=[];
+  pronouns.forEach(a=>pronouns.forEach(b=>{
+    if(a===b)return;
+    const roman=`${a.latin} / ${b.latin}`;
+    register(roman,`${toSyriac(a.latin)} / ${toSyriac(b.latin)}`);
+    pronounPairs.push({roman,meaning:`${a.english}; ${b.english}`});
+  }));
+  pronounPairs.forEach(pair=>{
+    const prompt=`Choose the two pronouns in this order: “${pair.meaning}”.`;
+    addQuiz('pronouns',prompt,pair.roman,pronounPairs.map(p=>p.roman),`${pair.meaning} = ${pair.roman}. The slash separates two pronouns.`,'pronoun-pair');
+    addPractice('pronouns',`Write two pronouns in order for “${pair.meaning}”. Separate them with / .`,[pair.roman],'Use the pronoun cards; include a slash between the two words.','pronoun-pair');
+  });
+  pronouns.forEach(c=>addQuiz('pronouns',`What does the written pronoun ${toSyriac(c.latin)} mean?`,c.english,pronounMeanings,c.note,'script-pronoun-meaning','english'));
+
+  // Locations supply a small, fully taught sentence-building set.
+  const placeChoices=places.map(p=>p[0]);
+  subjects.forEach((s,index)=>{
+    addQuiz('be',`Read ${toSyriac(s.verb)}. Choose the Roman ending.`,s.verb,verbChoices,`${s.verb} matches ${s.meaning}.`,'ending-script-reading','roman');
+    addPractice('be',`Read ${toSyriac(s.verb)}. Type the Roman ending.`,[s.verb],`The ending matches ${s.meaning}.`,'ending-script-reading','roman');
+    places.forEach(p=>{
+      const sentence=sentenceFor(s,p),meaning=sentenceMeaning(s,p);
+      addQuiz('be',`What does “${sentence}” mean?`,meaning,subjects.flatMap(x=>places.map(place=>sentenceMeaning(x,place))),`${sentence} = ${meaning}.`,'sentence-meaning','english');
+      addQuiz('be',`Read ${toSyriac(sentence)}. Choose the Roman sentence.`,sentence,subjects.flatMap(x=>places.map(place=>sentenceFor(x,place))),`${sentence} = ${meaning}.`,'sentence-script-reading','roman');
+      addPractice('be',`Read ${toSyriac(sentence)}. Type the Roman sentence.`,[sentence],`It means “${meaning}”.`,'sentence-script-reading','roman');
+      addQuiz('be',`“${meaning}.” Fill the place: ${s.pronoun} ___ ${s.verb}.`,p[0],placeChoices,`${p[0]} means ${p[2]}. ${sentence} = ${meaning}.`,'sentence-place');
+      addPractice('be',`“${meaning}.” Fill the place: ${s.pronoun} ___ ${s.verb}.`,[p[0]],`The place is ${p[2]}.`,'sentence-place');
+      addQuiz('pronouns',`In ${toSyriac(sentence)}, what does the first pronoun mean?`,pronouns.find(c=>c.latin===s.pronoun).english,pronounMeanings,`${s.pronoun} is the first word of ${sentence}.`,'sentence-subject-reading','english');
+      places.forEach(target=>{
+        if(p===target)return;
+        const answer=sentenceFor(s,target),targetMeaning=sentenceMeaning(s,target);
+        const prompt=`Change only the place in “${sentence}”: say “${targetMeaning}”.`;
+        const explanation=`Replace ${p[0]} (${p[2]}) with ${target[0]} (${target[2]}). Keep ${s.pronoun} and ${s.verb}: ${answer}.`;
+        addQuiz('be',prompt,answer,places.map(place=>sentenceFor(s,place)),explanation,'change-location');
+        addPractice('be',prompt,[answer],`Keep the person and ending. The new place is ${target[0]}.`,'change-location');
+      });
+      const target=subjects[[1,0,3,2,5,4,8,6,7][index]],answer=sentenceFor(target,p);
+      const prompt=`Change the person in “${sentence}”: say “${sentenceMeaning(target,p)}”.`;
+      addQuiz('be',prompt,answer,subjects.map(x=>sentenceFor(x,p)),`Use ${target.pronoun} with ${target.verb}: ${answer}.`,'change-person');
+      addPractice('be',prompt,[answer],`The new person is ${target.meaning}; keep ${p[0]}.`,'change-person');
+    });
+  });
+
+  // Split only exact, already taught phrase spellings, including the two
+  // Syriac words represented together by basmalukh / basmalakh / basmalokhun.
+  const phraseParts=new Map();
+  conversation.forEach(c=>{
+    const roman=c.latin.split(' '),written=toSyriac(c.latin).split(' ');
+    const aligned=c.latin.startsWith('in basmal')?[written[0],written.slice(1).join(' ')]:written;
+    if(roman.length!==aligned.length)throw new Error('Unaligned phrase: '+c.latin);
+    roman.forEach((word,i)=>{register(word,aligned[i]);phraseParts.set(word,aligned[i]);});
+  });
+  conversation.forEach(c=>{
+    addQuiz('conversation',`What does the written phrase ${toSyriac(c.latin)} mean?`,c.english,phraseMeanings,`${c.latin} = ${c.english}.`,'script-phrase-meaning','english');
+    const parts=c.latin.split(' ');if(parts.length<2)return;
+    parts.forEach((answer,i)=>{
+      const gap=parts.map((word,j)=>j===i?'___':word).join(' '),prompt=`Complete the lesson phrase for “${c.english}”: ${gap}.`;
+      addQuiz('conversation',prompt,answer,[...phraseParts.keys()],`${c.latin} = ${c.english}. ${c.note}`,'phrase-word-gap');
+      addPractice('conversation',prompt,[answer],c.note+' Use the missing word from the reference phrase.','phrase-word-gap');
+    });
+  });
+  const phraseBundles=[];
+  function bundle(parts,meaning){
+    const roman=parts.join('; ');register(roman,parts.map(toSyriac).join('؛ '));phraseBundles.push({roman,meaning});
+  }
+  for(const [greet,how,thanks,please,person] of [
+    ['shlama lokh','dakhi iwet','basima','in basmalukh','one male'],
+    ['shlama lakh','dakhi iwat','basimta','in basmalakh','one female'],
+    ['shlama lokhun','dakhi itun','basime','in basmalokhun','a group']
+  ]){
+    bundle([greet,how],`Hello; how are you? Both addressed to ${person}`);
+    bundle([greet,please],`Hello; please. Both addressed to ${person}`);
+    bundle([greet,thanks],`Hello; thank you. Both addressed to ${person}`);
+    for(const [well,speaker] of [['spay iwen','male speaker'],['spay iwan','female speaker']]){
+      bundle([well,thanks],`I am well (${speaker}); thank you (to ${person})`);
+    }
+    bundle(['he',thanks],`Yes; thank you (to ${person})`);
+    bundle(['la',thanks],`No; thank you (to ${person})`);
+  }
+  bundle(['modi ileh shimukh','shimmi ileh Rami'],'What is your name? (to one male); my name is Rami');
+  bundle(['modi ileh shimakh','shimmi ileh Rami'],'What is your name? (to one female); my name is Rami');
+  bundle(['pakhalta','len parmuye'],'Sorry; I do not understand');
+  for(const [greeting,time] of [['qdamta brikhta','Good morning'],['ramsha brikha','Good evening']]){
+    for(const [well,speaker] of [['spay iwen','male speaker'],['spay iwan','female speaker']])bundle([greeting,well],`${time}; I am well (${speaker})`);
+  }
+  phraseBundles.forEach(b=>{
+    const explanation=`${b.roman} = ${b.meaning}. The separator marks the two phrases.`;
+    addQuiz('conversation',`Choose the two lesson phrases in order: “${b.meaning}”.`,b.roman,phraseBundles.map(x=>x.roman),explanation,'two-phrase-exchange');
+    addQuiz('conversation',`Read ${toSyriac(b.roman)}. Choose the Roman phrases.`,b.roman,phraseBundles.map(x=>x.roman),explanation,'exchange-script-reading','roman');
+    addQuiz('conversation',`What does this short exchange mean: “${b.roman}”?`,b.meaning,phraseBundles.map(x=>x.meaning),explanation,'exchange-meaning','english');
+    addPractice('conversation',`Write the two lesson phrases in order: “${b.meaning}”. Separate them with a semicolon.`,[b.roman],explanation,'two-phrase-exchange');
+  });
+  const addressFamilies=[
+    ['hello',['shlama lokh','shlama lakh','shlama lokhun']],
+    ['how are you?',['dakhi iwet','dakhi iwat','dakhi itun']],
+    ['thank you',['basima','basimta','basime']],
+    ['please',['in basmalukh','in basmalakh','in basmalokhun']]
+  ];
+  const addressees=['one male','one female','a group'];
+  addressFamilies.forEach(([meaning,family])=>family.forEach((source,i)=>family.forEach((answer,j)=>{
+    if(i===j)return;
+    const prompt=`You used “${source}” for ${addressees[i]}. Now say “${meaning}” to ${addressees[j]}.`;
+    const explanation=`${answer} addresses ${addressees[j]}.`;
+    addQuiz('conversation',prompt,answer,phrases,explanation,'change-addressee');
+    addPractice('conversation',prompt,[answer],explanation,'change-addressee');
+  })));
   function createQuestionDeck(pool, random = Math.random) {
     const bank = [...pool];
     if(!bank.length || new Set(bank.map(q => q.id)).size !== bank.length) throw new Error('Question IDs must be unique');

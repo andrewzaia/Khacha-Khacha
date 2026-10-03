@@ -9,7 +9,8 @@
   const W=595.28,H=841.89,M=42,BOTTOM=H-65,SCALE=3;
   const colors={ink:'#182c37',muted:'#52616b',blue:'#087e8b',correct:'#126844',incorrect:'#9b3e2d',missed:'#855b0d'};
   const font=(size)=>`${size}px KhachaSyriac, Arial, sans-serif`;
-  const textSize=(text,size)=>/^[\s\u0700-\u074f\u0300-\u036f]+$/.test(text)?Math.max(size,17):size;
+  const isSyriac=text=>/[\u0710-\u072f]/.test(text)&&/^[\s\u0700-\u074f\u0300-\u036f/؛،؟,;:.!?–—-]+$/.test(text);
+  const textSize=(text,size)=>isSyriac(text)?Math.max(size,17):size;
   const clean=t=>String(t).replace(/[\r\n\t\u00a0]/g,' ').replace(/\s+/g,' ').trim();
   function wrap(ctx,text,size){ctx.font=font(size);const lines=[];let line='';for(const word of clean(text).split(' ')){const next=(line?line+' ':'')+word;if(ctx.measureText(next).width>W-2*M&&line){lines.push(line);line=word;}else line=next;}if(line)lines.push(line);return lines;}
   async function create(report){
@@ -18,7 +19,7 @@
     const pages=[];let canvas,ctx,y,content=[];
     function draw(text,size=11,tone='ink'){
       ctx.font=font(size);ctx.fillStyle=colors[tone];ctx.textBaseline='alphabetic';
-      const rtl=/^[\s\u0700-\u074f\u0300-\u036f]+$/.test(text);ctx.direction=rtl?'rtl':'ltr';ctx.textAlign=rtl?'right':'left';
+      const rtl=isSyriac(text);ctx.direction=rtl?'rtl':'ltr';ctx.textAlign=rtl?'right':'left';
       ctx.fillText(text,rtl?W-M:M,y);content.push({text,x:rtl?W-M-ctx.measureText(text).width:M,y,size});
     }
     function rule(at){ctx.strokeStyle='#d8e5e8';ctx.lineWidth=.6;ctx.beginPath();ctx.moveTo(M,at);ctx.lineTo(W-M,at);ctx.stroke();}

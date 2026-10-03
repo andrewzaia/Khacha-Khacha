@@ -6,7 +6,8 @@ Beginner Sureth (Assyrian Neo-Aramaic), little by little. A separate companion t
 
 - Five lessons: Syriac alphabet, numbers, pronouns, present “to be” forms and everyday conversation.
 - 97 revealable reference cards with Eastern Syriac, Roman spelling and pronunciation cues.
-- 853 quiz questions and 394 typing exercises, including number and sentence combinations.
+- 1,988 quiz questions and 1,365 typing exercises across all five lessons.
+- Letter order and spelling, number sequences, speaker/listener scenarios, pronoun pairs, sentence changes and short conversation exchanges.
 - Five-question quizzes, eight-question typing rounds and an eight-question daily mix.
 - Question decks rotate before repeating within a visit.
 - A password-gated 100-question mixed test: 20 questions per lesson and 60 seconds per question.
@@ -39,6 +40,16 @@ A test can run for up to 100 minutes. Refreshing or closing the page resets the 
 This is common Eastern Sureth, with a consistent beginner teaching set. It is not Classical Syriac or Turoyo. Family and village pronunciations vary; some alternatives are accepted in typing practice. Roman spellings are pronunciation aids, not a reversible transliteration of the Syriac script. Written silent letters are retained, and gender-specific endings are labelled explicitly.
 
 Numbers use standalone counting forms. Noun-counting agreement is outside this beginner set. The compounds use tens + `u` (and) + units. Reference cards cover 1–20, the tens, 100, 1,000 and 10,000; quizzes include every number from 1–100.
+
+The expanded bank reuses the vocabulary and forms taught in the reference cards. Each question includes an explanation or typing hint. Pronoun-pair typing uses a slash; two-phrase conversation typing uses a semicolon. Questions distinguish the person speaking from the person being addressed.
+
+| Lesson | Quiz questions | Typing exercises |
+| --- | ---: | ---: |
+| Alphabet | 301 | 235 |
+| Numbers | 848 | 572 |
+| Pronouns | 199 | 142 |
+| To be | 351 | 270 |
+| Everyday conversation | 289 | 146 |
 
 Pronunciation cues are approximate English guides. No recorded or synthesised audio is included. Before treating this as a formal teaching course, have a fluent speaker or teacher review the regional phrasing. All language content and question generation are in `data.js` so they can be adapted together.
 
