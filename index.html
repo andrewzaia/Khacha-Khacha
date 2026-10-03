@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Learn Sureth little by little. Beginner Assyrian lessons, Syriac reference cards, quizzes, typing practice and timed tests.">
+  <meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#087e8b">
+  <title>Khacha Khacha · Assyrian practice</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23087e8b'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-size='26' font-weight='bold' fill='white'%3EKK%3C/text%3E%3C/svg%3E">
+  <link rel="preload" href="syriac.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="styles.css"><script src="data.js" defer></script><script src="pdf-export.js" defer></script><script src="app.js" defer></script><script src="test.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#workspace">Skip to lesson</a>
+<div class="app-shell">
+  <aside class="sidebar">
+    <a class="brand" href="#" aria-label="Khacha Khacha, home"><span class="brand-mark" lang="aii-Syrc">ܚ</span><span>Khacha Khacha<span class="brand-sub">ASSYRIAN · LITTLE BY LITTLE</span></span></a>
+    <div class="nav-label">YOUR LESSONS</div>
+    <nav id="lesson-nav" aria-label="Lessons"></nav>
+    <button type="button" id="testing-link" class="lesson-link testing-link" data-action="open-test"><span class="lesson-number" aria-hidden="true">✓</span><span><strong>Testing</strong><small>100 mixed questions · timed</small></span></button>
+    <div class="daily-note"><span class="note-label">A gentle daily rhythm</span><strong>Learn 5. Try 5.</strong><p>Say a few cards out loud, then try a short quiz. Repeat tomorrow.</p><div class="tiny-script" lang="aii-Syrc">ܚܲܟ̰ܵܐ ܚܲܟ̰ܵܐ</div></div>
+    <div class="sidebar-bottom">Sureth · Untimed lessons, timed tests</div>
+  </aside>
+  <div class="main-wrap">
+    <header class="topbar"><span class="topbar-label">Your Sureth practice space</span><fieldset class="script-control"><legend class="sr-only">Display script</legend><button type="button" data-script="roman" aria-pressed="true">Roman <span>Aa</span></button><button type="button" data-script="syriac" aria-pressed="false">Syriac <span lang="aii-Syrc">ܐܒ</span></button></fieldset></header>
+    <main id="workspace" tabindex="-1">
+      <div class="lesson-heading"><div><div id="lesson-kicker" class="eyebrow"></div><h1 id="lesson-title"></h1><p id="lesson-description"></p></div><span id="lesson-count" class="count-badge"></span></div>
+      <div class="mode-nav" role="tablist" aria-label="Learning mode"><button type="button" role="tab" id="tab-learn" data-mode="learn" aria-controls="mode-content" aria-selected="true">Reference cards</button><button type="button" role="tab" id="tab-quiz" data-mode="quiz" aria-controls="mode-content" aria-selected="false" tabindex="-1">Quick quiz <span>5</span></button><button type="button" role="tab" id="tab-practice" data-mode="practice" aria-controls="mode-content" aria-selected="false" tabindex="-1">Type & practise</button></div>
+      <section id="mode-content" role="tabpanel" aria-labelledby="tab-learn"></section>
+      <section id="test-content" aria-label="Mixed Assyrian test" hidden></section>
+      <aside class="lesson-tip"><span class="tip-icon" aria-hidden="true">i</span><div><strong>One thing to remember</strong><p id="tip-content"></p></div></aside>
+      <footer><span>Little steps count. Khacha Khacha.</span><details class="source-details"><summary>Dialect, pronunciation & lesson notes</summary><p>This is a beginner Eastern Sureth (Assyrian Neo-Aramaic) learning set. Family and village dialects vary. Roman spelling follows common spoken forms; it is a reading aid rather than a letter-by-letter transliteration. The full Syriac spelling may retain letters that are not pronounced. “Sounds like” cues are approximate English guides, not audio or exact stress notation.</p><p>Some everyday alternatives, including kha / khad, tre / tren, ati, akhni and ane, are accepted in typing practice. The model “to be” endings distinguish male and female speakers and addressees. Vowel marks distinguish endings such as iwen and iwan; keep them if you answer in Syriac.</p><p>Language reference checks: <a href="https://openlanguage.org.au/wp-content/uploads/2020/08/MAALTA-BY-SAMI-HORMIS.pdf" target="_blank" rel="noopener noreferrer">Sami Hormis · Ma’alta</a>, <a href="https://assyriancircles.wordpress.com/wp-content/uploads/2021/08/assyrian-circles-beginners-guide-v1-july-2021.pdf" target="_blank" rel="noopener noreferrer">Assyrian Circles · Eastern beginners’ guide</a>, <a href="https://www.omniglot.com/language/phrases/assyrian.htm" target="_blank" rel="noopener noreferrer">Eastern Assyrian phrases</a>, <a href="https://en.wiktionary.org/wiki/%DC%97%DC%98%DC%90#Assyrian_Neo-Aramaic" target="_blank" rel="noopener noreferrer">present “to be” forms</a>, and <a href="https://www.assyrianlanguages.org/sureth/index.php" target="_blank" rel="noopener noreferrer">Sureth dictionary</a>.</p></details></footer>
+    </main>
+  </div>
+</div>
+<noscript><div class="noscript">Enable JavaScript to use the reference cards, quizzes and practice exercises.</div></noscript>
+</body>
+</html>
