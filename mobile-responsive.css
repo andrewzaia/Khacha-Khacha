@@ -1,0 +1,119 @@
+/* Responsive enhancement for Malo Po Malo / Khacha Khacha */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:hidden}
+body{min-width:0;overflow-x:hidden}
+img,svg,video,canvas{max-width:100%;height:auto}
+button,input,select,textarea{max-width:100%}
+#mode-content,#test-content,.main-wrap,main,.exercise-shell,.flashcard,.catalogue{min-width:0}
+
+@supports(padding:max(0px)){
+  body{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+}
+
+@media (hover:none) and (pointer:coarse){
+  button,.lesson-link,summary,.test-choice{min-height:44px}
+  .character-keys button{min-width:44px;min-height:44px}
+}
+
+@media(max-width:850px){
+  .app-shell{grid-template-columns:1fr}
+  .sidebar{position:relative;z-index:3;border-right:0;border-bottom:1px solid var(--border)}
+  .nav-label,.daily-note,.sidebar-bottom{display:none}
+  #lesson-nav{display:flex;flex-direction:row;gap:8px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-inline:contain;scroll-snap-type:x proximity}
+  #lesson-nav::-webkit-scrollbar{display:none}
+  #lesson-nav .lesson-link,.testing-link{scroll-snap-align:start;flex:0 0 auto}
+  .lesson-link{width:auto;white-space:nowrap;border:1px solid var(--border);border-radius:8px}
+  .lesson-link small{display:none}
+  .testing-link{margin-top:0;border:1px solid var(--border);border-radius:8px;padding-top:9px}
+  .topbar{flex-wrap:wrap}
+  .mode-nav{overflow-x:auto;justify-content:flex-start;gap:22px;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-inline:contain}
+  .mode-nav::-webkit-scrollbar{display:none}
+  .mode-nav button{flex:0 0 auto;white-space:nowrap}
+  .lesson-heading{align-items:flex-start}
+}
+
+@media(max-width:600px){
+  .app-shell{width:100%;overflow:clip}
+  .sidebar{padding:14px 16px 12px;gap:14px}
+  .brand{min-width:0}
+  .brand>span:last-child{min-width:0}
+  .brand-sub{white-space:normal}
+  #lesson-nav{margin-inline:-16px;padding-inline:16px;padding-bottom:4px}
+  .lesson-link{padding:9px 12px}
+  .topbar{position:sticky;top:0;z-index:2;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:12px 16px;gap:10px}
+  .topbar-label{flex:1 1 130px}
+  .script-control{flex:0 1 auto}
+  main{width:100%;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right));padding-bottom:max(20px,env(safe-area-inset-bottom))}
+  .lesson-heading{display:block}
+  .count-badge{display:inline-block;margin-top:14px}
+  h1{font-size:clamp(1.9rem,9vw,2.35rem);overflow-wrap:anywhere}
+  .lesson-heading p{font-size:.94rem}
+  .mode-nav{margin-inline:-16px;padding-inline:16px;gap:20px;justify-content:flex-start}
+  .mode-nav button{font-size:.875rem;padding-bottom:13px}
+  .reference-layout{display:flex;flex-direction:column-reverse;gap:25px;min-width:0}
+  .catalogue,.flashcard{width:100%}
+  .tile-grid{grid-template-columns:repeat(auto-fit,minmax(46px,1fr))}
+  .word-grid,.word-grid.phrases{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .word-tile{min-width:0;overflow-wrap:anywhere}
+  .card-top,.card-actions{flex-wrap:wrap}
+  .card-actions .small-button{flex:1 1 110px}
+  .exercise-shell{width:100%;padding:20px 16px;border-radius:13px}
+  .exercise-meta{flex-wrap:wrap}
+  .exercise-shell h2,.test-answers legend{font-size:clamp(1.4rem,6.5vw,1.7rem);overflow-wrap:anywhere}
+  .answer-input{font-size:16px}
+  .choice-list{grid-template-columns:1fr}
+  .choice,.test-choice{width:100%;font-size:.95rem}
+  .exercise-footer{flex-direction:column;align-items:stretch}
+  .exercise-footer>span{max-width:none}
+  .exercise-footer .primary-button{width:100%}
+  .practice-tools>*{flex:1 1 130px}
+  .test-meta{align-items:flex-start}
+  .test-clock{position:sticky;top:76px;z-index:1;min-width:82px;padding:8px 11px}
+  .test-clock strong{font-size:1.55rem}
+  .test-actions,.test-buttons{flex-direction:column;align-items:stretch}
+  .test-actions button,.test-buttons button{width:100%}
+  .test-stats{grid-template-columns:1fr}
+  .test-stats>div{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+  .test-stats strong{font-size:1.4rem}
+  .test-stats span{margin-top:0}
+  .test-table-wrap{margin-inline:-16px;padding-inline:16px}
+  .test-breakdown table{min-width:520px}
+  .test-review-heading{align-items:flex-start}
+  .test-filters{width:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:3px}
+  .test-filters button{flex:0 0 auto}
+  .completion-buttons{flex-direction:column}
+  footer{flex-direction:column;gap:12px;padding-bottom:env(safe-area-inset-bottom)}
+  .source-details{max-width:100%;text-align:left}
+}
+
+@media(max-width:420px){
+  .topbar{align-items:stretch}
+  .topbar-label{flex-basis:100%}
+  .script-control{width:100%}
+  .script-control button{flex:1}
+  .word-grid,.word-grid.phrases{grid-template-columns:1fr}
+  .card-actions{align-items:stretch}
+  .card-actions>span{width:100%;text-align:center;order:-1}
+  .test-meta{flex-direction:column}
+  .test-clock{position:static;width:100%;flex-direction:row;justify-content:space-between}
+  .test-score{flex-wrap:wrap}
+}
+
+@media(max-width:360px){
+  main{padding-left:12px;padding-right:12px}
+  .mode-nav{margin-inline:-12px;padding-inline:12px}
+  .tile-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .lesson-tip{gap:10px}
+  .lesson-tip .tip-icon{display:none}
+}
+
+@media(max-height:500px) and (orientation:landscape) and (max-width:950px){
+  .sidebar{padding-block:8px;gap:8px}
+  .brand-mark{width:34px;height:36px;font-size:1.55rem}
+  .brand-sub{display:none}
+  .topbar{position:static;min-height:54px}
+  main{padding-top:18px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
