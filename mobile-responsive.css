@@ -226,3 +226,13 @@ button,input,select,textarea{max-width:100%}
   .sidebar { padding-inline: 12px; }
   #lesson-nav { margin-inline: -12px; padding-inline: 12px; width: auto; max-width: none; }
 }
+
+/* Keep the lesson scroller aligned with Choose your level and Testing in portrait. */
+@media (max-width: 600px) {
+  #lesson-nav {
+    width: 100%;
+    max-width: 100%;
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+}
