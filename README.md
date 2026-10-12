@@ -1,74 +1,82 @@
-# Khacha Khacha
+# Khacha Khacha · ܚܲܟ̰ܵܐ ܚܲܟ̰ܵܐ
 
-Beginner Sureth (Assyrian Neo-Aramaic), little by little. A separate companion to Malo po malo.
+**Learn Assyrian, little by little.** Khacha Khacha is a beginner-friendly website for exploring **Eastern Sureth (Assyrian Neo-Aramaic)** through short lessons, useful phrases and interactive practice.
 
-## What is included
+### 👉 [Start learning Assyrian](https://andrewzaia.github.io/Khacha-Khacha/)
 
-- Five lessons: Syriac alphabet, numbers, pronouns, present “to be” forms and everyday conversation.
-- 97 revealable reference cards with Eastern Syriac, Roman spelling and pronunciation cues.
-- 1,988 quiz questions and 1,365 typing exercises across all five lessons.
-- Letter order and spelling, number sequences, speaker/listener scenarios, pronoun pairs, sentence changes and short conversation exchanges.
-- Five-question quizzes, eight-question typing rounds and an eight-question daily mix.
-- Question decks rotate before repeating within a visit.
-- A password-gated 100-question mixed test: 20 questions per lesson and 60 seconds per question.
-- Expired questions are marked missed; deadlines remain accurate after a background tab or device sleep.
-- Immediate scores, lesson breakdowns, a full review and a downloadable PDF with readable Syriac.
-- Mobile layouts, keyboard controls, a locally bundled Syriac font and no external runtime dependencies.
+**[Open the learning website →](https://andrewzaia.github.io/Khacha-Khacha/)**
 
-## Publish on GitHub Pages
+No downloads, installation or account required. Open the site in your browser and practise on your phone, tablet or computer.
 
-1. Create a repository, for example `khacha-khacha`.
-2. Extract `Khacha_Khacha_Website.zip` on your computer.
-3. Upload **all extracted files to the repository root**, including `index.html`, both folders/files if any, and `.nojekyll`. Do not upload just the ZIP or nest the site inside an extra folder.
-4. In **Settings → Pages**, select **Deploy from a branch**, then **main** and **/(root)**, and save.
-5. Open the URL GitHub displays once the deployment finishes.
+## What you'll learn
 
-Relative asset paths support both a root site and a project URL such as `https://YOUR-USERNAME.github.io/khacha-khacha/`. No Node installation, database, API key or build step is needed. You can also upload the same files to an ordinary static web host.
+Build a foundation across five beginner lessons:
 
-For a local check, open `index.html` in a browser. If your browser blocks the local font, serve the folder with `python -m http.server 8000`, then open `http://localhost:8000`.
+| Lesson | What you'll practise |
+| --- | --- |
+| **Alphabet** | Eastern Syriac letters, recognition and spelling |
+| **Numbers** | Counting, number words and sequences |
+| **Pronouns** | Talking about yourself and other people |
+| **“To be”** | Simple statements and questions |
+| **Everyday conversation** | Greetings, introductions and useful exchanges |
 
-## Testing access word
+Lessons introduce words and phrases in both **Syriac script** and **Roman spelling**, with beginner-friendly pronunciation cues.
 
-The starter password is **`shlama`**. To change it, edit `TEST_WORD` near the top of `test.js`.
+## Learn your way
 
-This is a convenience gate implemented in the browser, not secure authentication. The access word can be inspected in the source. Do not use it to protect confidential material or official examination results. The private Sites deployment is protected separately by owner-only access.
+- **Reference cards:** Discover letters, words and everyday expressions, then reveal answers and explanations.
+- **Quick quizzes:** Check your understanding in short, five-question rounds.
+- **Type & practise:** Build confidence by recalling and typing words and phrases.
+- **Roman and Syriac views:** Change how the language is displayed as you become more comfortable with the script.
+- **Daily mix:** Try a short selection of questions across what you've studied.
+- **Instant feedback:** See where you went right and what to revisit.
 
-A test can run for up to 100 minutes. Refreshing or closing the page resets the current test. Results are kept in the page until another test begins; download the PDF before leaving if you want to keep them.
+### Want a bigger challenge?
 
-## Language notes
+The **Testing** section includes a 100-question assessment covering all five lessons, with up to **60 seconds per question**. With a test access word, you can take the challenge, review your responses and download a **PDF** of your results.
 
-This is common Eastern Sureth, with a consistent beginner teaching set. It is not Classical Syriac or Turoyo. Family and village pronunciations vary; some alternatives are accepted in typing practice. Roman spellings are pronunciation aids, not a reversible transliteration of the Syriac script. Written silent letters are retained, and gender-specific endings are labelled explicitly.
+## How to get started
 
-Numbers use standalone counting forms. Noun-counting agreement is outside this beginner set. The compounds use tens + `u` (and) + units. Reference cards cover 1–20, the tens, 100, 1,000 and 10,000; quizzes include every number from 1–100.
+1. **[Visit Khacha Khacha](https://andrewzaia.github.io/Khacha-Khacha/).**
+2. Choose a lesson, starting with the **Alphabet** if you're completely new.
+3. Work through the **Reference cards** and reveal their answers.
+4. Try a **Quick quiz** or **Type & practise** to reinforce what you've learnt.
+5. Return often — even a few minutes of regular practice can help.
 
-The expanded bank reuses the vocabulary and forms taught in the reference cards. Each question includes an explanation or typing hint. Pronoun-pair typing uses a slash; two-phrase conversation typing uses a semicolon. Questions distinguish the person speaking from the person being addressed.
+**Little steps count. Khacha Khacha.**
 
-| Lesson | Quiz questions | Typing exercises |
-| --- | ---: | ---: |
-| Alphabet | 301 | 235 |
-| Numbers | 848 | 572 |
-| Pronouns | 199 | 142 |
-| To be | 351 | 270 |
-| Everyday conversation | 289 | 146 |
+## A note on language and pronunciation
 
-Pronunciation cues are approximate English guides. No recorded or synthesised audio is included. Before treating this as a formal teaching course, have a fluent speaker or teacher review the regional phrasing. All language content and question generation are in `data.js` so they can be adapted together.
+Sureth is spoken in different communities, families and regions, and you may encounter variations in vocabulary or pronunciation. This course focuses on a consistent **Eastern Sureth beginner variety**, rather than Classical Syriac or Turoyo.
 
-Reference checks are linked in the website footer, including Sami Hormis’s *Ma’alta*, the Assyrian Circles Eastern beginners’ guide, Eastern Assyrian phrases, present copula forms and the Sureth dictionary. No source textbook PDFs are redistributed.
+Roman spellings and English “sounds like” hints are learning aids, not exact phonetic transcriptions. The website does **not** include recorded pronunciation audio. Some alternative forms are accepted in practice, but fluent speakers and teachers remain valuable resources.
 
-## PDF review
+## Good to know
 
-The PDF export uses the browser’s text shaping to keep Syriac joined and ordered correctly. It produces A4 review pages with a Unicode text layer, all 100 questions, submitted answers, correct answers and explanations. The Syriac font is local, so there is no CDN dependency. The PDF can take a few seconds on a phone.
+- The learning activities run directly in your browser, without an account.
+- Timed tests reset if you reload or close the page; download your PDF report before leaving.
+- Answers are checked against the beginner material taught on the site. They are not a formal evaluation of fluency.
+- The website is intended as a helpful starting point, not a replacement for learning with fluent speakers.
 
-## Files
+## Also learning Serbian?
 
-- `index.html` — site entry point
-- `styles.css` — responsive layouts and typography
-- `data.js` — lessons, approved spellings, question banks and question rotation
-- `app.js` — reference cards, quizzes and typing practice
-- `test.js` — test password, deadlines, scoring and results
-- `pdf-export.js` — client-side PDF export
-- `syriac.ttf` — Noto Sans Syriac Eastern
-- `FONT-LICENSE.txt` — SIL Open Font License for the bundled font
-- `.nojekyll` — bypass Jekyll processing on GitHub Pages
+Explore **[Malo po malo — Learn Serbian](https://andrewzaia.github.io/Malo-Po-Malo/)**, the companion website with Beginner and Intermediate courses, Latin and Cyrillic practice, and guided conversations.
 
-The website has no analytics, database or server-side accounts. Publishing the files on GitHub Pages makes them accessible according to your GitHub Pages configuration. The `noindex` metadata only discourages search indexing; it is not access control.
+## About the project
+
+Khacha Khacha is a browser-based learning project hosted on GitHub Pages, designed to help newcomers practise Assyrian language skills through manageable daily steps.
+
+Found an issue or have an idea for improvement? [Share feedback on GitHub](https://github.com/andrewzaia/Khacha-Khacha/issues).
+
+<details>
+<summary><strong>For developers and contributors</strong></summary>
+
+The website uses static HTML, CSS and JavaScript, with a locally bundled Syriac font. No application server, database, build step or API keys are required.
+
+To run locally, clone or download the repository and open `index.html`. If local browser security prevents the font from loading, serve the folder with `python -m http.server 8000` and visit `http://localhost:8000`.
+
+Lesson content and practice questions are defined in `data.js`. The timed-test access word is configured client-side and is not secure authentication.
+
+The bundled font is distributed with its licence in `FONT-LICENSE.txt`.
+
+</details>
