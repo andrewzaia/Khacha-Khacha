@@ -117,3 +117,112 @@ button,input,select,textarea{max-width:100%}
 @media(prefers-reduced-motion:reduce){
   *{transition:none!important;scroll-behavior:auto!important}
 }
+
+/* Portrait viewport containment — shared by Malo Po Malo and Khacha Khacha.
+   Keep intentional sideways scrolling inside lesson tabs, navigation and tables. */
+@media (max-width: 850px) {
+  /* A plain 1fr track has an automatic intrinsic minimum and can be widened
+     by its contents. minmax(0, 1fr) allows the track to fit the viewport. */
+  .app-shell {
+    grid-template-columns: minmax(0, 1fr);
+    min-width: 0;
+    max-width: 100%;
+  }
+  .app-shell > .sidebar,
+  .app-shell > .main-wrap,
+  .sidebar .brand,
+  .sidebar .brand > span:last-child,
+  .level-picker,
+  .level-buttons,
+  .level-buttons > button {
+    min-width: 0;
+  }
+  .sidebar,
+  .main-wrap,
+  .topbar,
+  main {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+  #lesson-nav {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    flex-shrink: 1;
+  }
+  .testing-link { max-width: 100%; min-width: 0; }
+  #mode-content,
+  #test-content,
+  .reference-layout,
+  .catalogue,
+  .flashcard,
+  .exercise-shell,
+  .lesson-heading,
+  .lesson-tip,
+  .conversation-shell,
+  .exchange-layout,
+  .exchange-card,
+  .chat-transcript,
+  .test-gate,
+  .test-results,
+  .test-review,
+  .test-breakdown,
+  .word-grid,
+  .tile-grid,
+  .choice-list,
+  .scene-list,
+  .test-stats,
+  .test-review-item {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .mode-nav,
+  .test-table-wrap,
+  .test-filters {
+    min-width: 0;
+    max-width: 100%;
+    overscroll-behavior-x: contain;
+  }
+  .test-review-item summary,
+  .test-review-item summary > span,
+  .test-meta > *,
+  .card-actions > *,
+  .lesson-tip > div:last-child { min-width: 0; }
+  /* Long answers and words must wrap rather than enlarge the layout. */
+  .big-word,
+  .script-pair,
+  .syriac-run,
+  [lang="aii-Syrc"],
+  .chat-bubble,
+  .scene-button,
+  .word-chip,
+  .choice,
+  .test-choice,
+  .feedback,
+  .test-review-body,
+  .test-review-item,
+  .lesson-tip {
+    overflow-wrap: anywhere;
+  }
+}
+@media (max-width: 600px) {
+  /* The existing mobile tabs deliberately bleed to the content edges.
+     Do not cap their width at 100% after negative margins are applied. */
+  .mode-nav { width: auto; max-width: none; }
+  .brand > span:last-child { overflow-wrap: anywhere; }
+  .script-control,
+  .script-control button { min-width: 0; }
+  .level-picker { width: 100%; max-width: 100%; }
+  .level-buttons { flex-wrap: wrap; }
+  .level-buttons > button { flex: 1 1 112px; }
+  .test-table-wrap { margin-inline: 0; padding-inline: 0; }
+  .test-answers legend,
+  .test-review-body,
+  .test-review-item summary { max-width: 100%; }
+}
+@media (max-width: 360px) {
+  /* Maintain edge-to-edge lesson scroller after sidebar padding shrinks. */
+  .sidebar { padding-inline: 12px; }
+  #lesson-nav { margin-inline: -12px; padding-inline: 12px; width: auto; max-width: none; }
+}
