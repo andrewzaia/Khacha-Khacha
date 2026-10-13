@@ -55,3 +55,20 @@
 .brand-mark{font-family:KhachaSyriac,sans-serif}.brand-sub{font-size:.75rem}.word-tile small,.lesson-link small,.catalogue-note,.section-label,.pool-note,.input-note{font-size:.875rem}
 .eyebrow .syriac-run{font-size:1.5em}.tiny-script{font-family:KhachaSyriac,sans-serif;direction:rtl;font-size:1.8rem;font-style:normal}.choice span:last-child,.test-choice span:last-child{min-width:0;overflow-wrap:anywhere}.question-label{line-height:1.7}
 @media(max-width:650px){.script-control button{padding:8px}.topbar-label{font-size:.8rem}.brand{font-size:1rem}.tile-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.word-grid{grid-template-columns:1fr}.big-word{font-size:1.9rem}.mode-nav{gap:16px}.mode-nav button{font-size:.875rem}.syriac-run{line-height:2}.card-face{padding:20px 12px}}
+
+
+/* Shared numbered level selector, in Khacha Khacha's teal branding. */
+.level-picker{margin-top:4px;min-width:0}
+.level-picker .note-label{font-weight:650}
+.level-buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px;border:1px solid var(--border);border-radius:10px;background:#f5f7fc;min-width:0}
+.level-buttons button{min-width:0;width:100%;min-height:42px;border:0;border-radius:7px;background:transparent;color:var(--muted);padding:10px 3px;font-size:.85rem;line-height:1.25;font-weight:650;white-space:nowrap}
+.level-buttons button[aria-pressed=true]{background:var(--blue);color:#fff}
+.level-buttons button:disabled{opacity:.65}
+.level-picker p{font-size:.8rem;line-height:1.6;color:var(--muted);margin:10px 2px 0}
+.coming-soon-panel{text-align:center;padding-block:52px}
+.coming-soon-panel .coming-soon-icon{font-size:2rem;display:block;margin-bottom:16px;color:var(--blue)}
+.coming-soon-panel h2{margin:6px 0 12px}
+.coming-soon-panel p{max-width:540px;margin:12px auto;line-height:1.7;color:var(--muted)}
+.coming-soon-panel .primary-button{margin-top:22px}
+@media(max-width:850px){.level-picker{max-width:480px;margin-top:0}.level-picker .note-label{margin-bottom:6px}.level-picker p{margin-top:6px}.sidebar{gap:14px}}
+@media(max-width:600px){.level-picker{max-width:none;width:100%}.level-buttons button{padding:9px 3px;font-size:clamp(.72rem,2.55vw,.83rem)}.coming-soon-panel{padding:34px 18px}}
