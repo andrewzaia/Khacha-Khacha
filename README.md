@@ -81,4 +81,10 @@ Existing beginner content and practice questions are defined in `data.js`. The n
 
 The bundled font is distributed with its licence in `FONT-LICENSE.txt`.
 
+To run the basic course-level regression checks with Node.js:
+
+```sh
+node --test tests/course-levels.test.cjs
+```
+
 </details>
