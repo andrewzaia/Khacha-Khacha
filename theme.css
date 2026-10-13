@@ -1,0 +1,179 @@
+/* Reusable theme switch: keeps the course layout and responsive behavior intact. */
+:root:not([data-theme="dark"]) { color-scheme: light; }
+.topbar-actions { display: flex; align-items: center; justify-content: flex-end; gap: 10px; min-width: 0; margin-left: auto; }
+.topbar-actions .script-control { min-width: 0; }
+.theme-toggle {
+  display: inline-grid; place-items: center; flex: 0 0 43px;
+  width: 43px; height: 43px; padding: 0; border: 1px solid var(--border);
+  border-radius: 10px; background: #f5f7fb; color: var(--navy);
+  position: relative; cursor: pointer;
+}
+.theme-toggle:hover { border-color: var(--blue); background: #edf1ff; }
+.theme-toggle .theme-icon { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.theme-icon-sun { display: none; }
+:root[data-theme="dark"] .theme-icon-sun { display: block; }
+:root[data-theme="dark"] .theme-icon-moon { display: none; }
+
+@media (max-width: 600px) {
+  .topbar-actions { max-width: 100%; }
+  .theme-toggle { flex-basis: 44px; width: 44px; height: 44px; }
+}
+@media (max-width: 420px) {
+  .topbar-actions { width: 100%; margin-left: 0; }
+  .topbar-actions .script-control { width: auto; flex: 1 1 0; }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  color: #e9f0fb;
+  background: #101827;
+  --blue: #6bddd9;
+  --theme-accent-fill: #087e8b;
+  --navy: #edf3ff;
+  --muted: #afbed5;
+  --border: #35455d;
+  --theme-surface: #172337;
+  --theme-raised: #1d2c43;
+  --theme-soft: #253652;
+  --theme-hover: #2b4163;
+  --theme-ink: #edf3ff;
+  --theme-subtle: #9eb1cd;
+}
+:root[data-theme="dark"] body { background: #101827; color: var(--theme-ink); }
+:root[data-theme="dark"] .sidebar,
+:root[data-theme="dark"] .topbar,
+:root[data-theme="dark"] .flashcard,
+:root[data-theme="dark"] .exercise-shell,
+:root[data-theme="dark"] .pattern-notes,
+:root[data-theme="dark"] .test-review-item,
+:root[data-theme="dark"] .letter-tile,
+:root[data-theme="dark"] .word-tile,
+:root[data-theme="dark"] .choice,
+:root[data-theme="dark"] .small-button,
+:root[data-theme="dark"] .word-chip,
+:root[data-theme="dark"] .scene-button,
+:root[data-theme="dark"] .answer-input,
+:root[data-theme="dark"] .test-filters button,
+:root[data-theme="dark"] .count-badge,
+:root[data-theme="dark"] .theme-toggle {
+  background: var(--theme-surface); color: var(--theme-ink);
+}
+:root[data-theme="dark"] .topbar { border-color: var(--border); }
+:root[data-theme="dark"] .brand,
+:root[data-theme="dark"] .section-label strong,
+:root[data-theme="dark"] .pronunciation strong,
+:root[data-theme="dark"] .pattern-notes strong,
+:root[data-theme="dark"] .test-rules strong { color: var(--navy); }
+:root[data-theme="dark"] .brand-mark { background: var(--theme-accent-fill); color: #fff; }
+:root[data-theme="dark"] .nav-label,
+:root[data-theme="dark"] .source-details summary,
+:root[data-theme="dark"] .letter-tile .secondary-letter,
+:root[data-theme="dark"] .script-pair,
+:root[data-theme="dark"] .script-control span,
+:root[data-theme="dark"] #progress-note { color: var(--theme-subtle); }
+:root[data-theme="dark"] .daily-note,
+:root[data-theme="dark"] .level-buttons,
+:root[data-theme="dark"] .script-control,
+:root[data-theme="dark"] .review-row,
+:root[data-theme="dark"] .test-stats > div,
+:root[data-theme="dark"] .closing-reply,
+:root[data-theme="dark"] .hint,
+:root[data-theme="dark"] .chosen-words,
+:root[data-theme="dark"] .chat-bubble,
+:root[data-theme="dark"] .test-clock {
+  background: var(--theme-raised); border-color: var(--border);
+}
+:root[data-theme="dark"] .script-control button[aria-pressed="true"] {
+  background: var(--theme-soft); color: var(--theme-ink); box-shadow: none;
+}
+:root[data-theme="dark"] .mode-nav span,
+:root[data-theme="dark"] .completion .finish-mark,
+:root[data-theme="dark"] .test-status,
+:root[data-theme="dark"] .character-keys button {
+  background: var(--theme-soft); color: var(--theme-ink); border-color: var(--border);
+}
+:root[data-theme="dark"] .lesson-link:hover,
+:root[data-theme="dark"] .small-button:hover,
+:root[data-theme="dark"] .letter-tile:hover,
+:root[data-theme="dark"] .word-tile:hover,
+:root[data-theme="dark"] .word-chip:hover:not(:disabled),
+:root[data-theme="dark"] .scene-button:hover,
+:root[data-theme="dark"] .test-filters button:hover,
+:root[data-theme="dark"] .choice:hover:not(:disabled),
+:root[data-theme="dark"] .test-choice:hover,
+:root[data-theme="dark"] .character-keys button:hover,
+:root[data-theme="dark"] .theme-toggle:hover {
+  background: var(--theme-hover); border-color: var(--blue);
+}
+:root[data-theme="dark"] .lesson-link.active,
+:root[data-theme="dark"] .chat-bubble.you,
+:root[data-theme="dark"] .test-choice.selected,
+:root[data-theme="dark"] .test-filters button[aria-pressed="true"],
+:root[data-theme="dark"] .chosen-words .word-chip {
+  background: var(--theme-soft); border-color: var(--blue); color: var(--theme-ink);
+}
+:root[data-theme="dark"] .lesson-link.active { color: var(--blue); }
+:root[data-theme="dark"] .lesson-link.active .lesson-number,
+:root[data-theme="dark"] .level-buttons button[aria-pressed="true"],
+:root[data-theme="dark"] .letter-tile[aria-pressed="true"],
+:root[data-theme="dark"] .word-tile[aria-pressed="true"],
+:root[data-theme="dark"] .primary-button:not(:disabled) {
+  background: var(--theme-accent-fill); border-color: var(--theme-accent-fill); color: white;
+}
+:root[data-theme="dark"] .letter-tile[aria-pressed="true"] .secondary-letter,
+:root[data-theme="dark"] .word-tile[aria-pressed="true"] small { color: #e9f0ff; }
+:root[data-theme="dark"] .primary-button:hover:not(:disabled) { filter: brightness(1.13); }
+:root[data-theme="dark"] .primary-button:disabled {
+  background: var(--theme-soft); border-color: var(--border); color: var(--theme-subtle);
+}
+:root[data-theme="dark"] .card-face {
+  background: linear-gradient(150deg, #172337 20%, #233852);
+}
+:root[data-theme="dark"] .card-top,
+:root[data-theme="dark"] .review-answer,
+:root[data-theme="dark"] .test-review-body .test-explanation { border-color: var(--border); }
+:root[data-theme="dark"] .reveal-button {
+  background: var(--theme-soft); border-color: var(--blue); color: var(--blue);
+}
+:root[data-theme="dark"] .reveal-button:hover,
+:root[data-theme="dark"] .revealed,
+:root[data-theme="dark"] .lesson-tip {
+  background: var(--theme-raised); border-color: var(--border);
+}
+:root[data-theme="dark"] .revealed strong { color: var(--blue); }
+:root[data-theme="dark"] .tip-icon { background: var(--theme-soft); color: var(--blue); }
+:root[data-theme="dark"] .progress-track { background: var(--theme-soft); }
+:root[data-theme="dark"] .answer-input:disabled { background: var(--theme-soft); color: var(--muted); }
+:root[data-theme="dark"] .answer-input::placeholder { color: var(--theme-subtle); }
+:root[data-theme="dark"] .feedback { background: var(--theme-soft); color: var(--theme-ink); }
+:root[data-theme="dark"] .choice.correct,
+:root[data-theme="dark"] .feedback.correct,
+:root[data-theme="dark"] .test-status.correct {
+  background: #173d35; border-color: #3f9478; color: #b3f5dc;
+}
+:root[data-theme="dark"] .choice.incorrect,
+:root[data-theme="dark"] .feedback.incorrect,
+:root[data-theme="dark"] .test-status.incorrect {
+  background: #4b292d; border-color: #b96b6b; color: #ffd0ce;
+}
+:root[data-theme="dark"] .feedback.accent,
+:root[data-theme="dark"] .test-status.missed {
+  background: #483822; border-color: #bd8d4e; color: #ffe0a6;
+}
+:root[data-theme="dark"] .test-notice { color: #ffe0a6; }
+:root[data-theme="dark"] .test-error,
+:root[data-theme="dark"] .test-clock .timer-low { color: #ffa99a; }
+:root[data-theme="dark"] .test-choice { background: var(--theme-surface); border-color: var(--border); }
+:root[data-theme="dark"] .test-choice.selected { background: var(--theme-soft); border-color: var(--blue); }
+:root[data-theme="dark"] .test-review-item summary:hover { background: var(--theme-hover); }
+:root[data-theme="dark"] .test-review-body strong { color: var(--blue); }
+:root[data-theme="dark"] .skip-link { background: var(--theme-raised); color: var(--theme-ink); }
+:root[data-theme="dark"] input:focus-visible,
+:root[data-theme="dark"] button:focus-visible,
+:root[data-theme="dark"] a:focus-visible,
+:root[data-theme="dark"] summary:focus-visible {
+  outline-color: #ffd18b;
+}
+@media (max-width: 600px) {
+  :root[data-theme="dark"] .topbar { background: rgba(23,35,55,.96); }
+}
