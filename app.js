@@ -87,14 +87,14 @@
       const item=D.levels.find(item=>item.id===b.dataset.level),available=D.getLessons(item.id).length>0;
       b.setAttribute('aria-pressed',String(b.dataset.level===state.level));
       b.setAttribute('aria-label','Level '+item.number+', '+item.title+(available?'':', coming soon'));
-      b.title=item.title+(available?'':' — Coming soon');
+      b.title=item.title+(available?'':' - Coming soon');
       const soon=b.querySelector('.level-soon');if(soon)soon.hidden=available;
       b.disabled=running;
     });
     $('level-description').textContent=level.title+' · '+(ready?level.description:'Coming soon. '+level.description);
     if(!ready){
       $('lesson-kicker').textContent='LEVEL '+level.number+' · '+level.title.toUpperCase();
-      $('lesson-title').textContent=level.title+' — Coming soon';
+      $('lesson-title').textContent=level.title+' - Coming soon';
       $('lesson-description').textContent=level.description;
       $('lesson-count').textContent='Coming soon';
       $('mode-content').setAttribute('aria-labelledby','lesson-title');
@@ -124,7 +124,7 @@
     let grid=list.map((c,i)=>{
       const selected=i===state.selected;
       let group='';
-      if(state.lesson==='numbers'&&[0,10,20,28].includes(i))group=`<div class="group-label">${{0:'1–10',10:'11–20',20:'Tens to 100',28:'Bigger numbers'}[i]}</div>`;
+      if(state.lesson==='numbers'&&[0,10,20,28].includes(i))group=`<div class="group-label">${{0:'1-10',10:'11-20',20:'Tens to 100',28:'Bigger numbers'}[i]}</div>`;
       return group+`<button type="button" class="${isLetter?'letter-tile':'word-tile'}" data-card="${i}" aria-pressed="${selected}" aria-label="Study card ${i+1}"><span lang="${state.script==='syriac'?'aii-Syrc':'en'}">${escape(isLetter?(state.script==='syriac'?c.syriac:c.latin):state.lesson==='numbers'?c.label:sr(c.label))}</span>${isLetter?`<span class="secondary-letter" lang="${state.script==='syriac'?'en':'aii-Syrc'}">${escape(state.script==='syriac'?c.latin:c.syriac)}</span>`:''}${c.sub?`<small>${escape(c.sub)}</small>`:''}</button>`;
     }).join('');
     const answer=isLetter?`<strong lang="aii">${escape(sr(card.example))}</strong><p>${escape(card.english)}</p>`:`<strong>${escape(card.english)}</strong>${card.example?`<p><span lang="aii">${escape(sr(card.example))}</span><br>${escape(card.exampleMeaning)}</p>`:''}`;

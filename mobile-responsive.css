@@ -118,7 +118,7 @@ button,input,select,textarea{max-width:100%}
   *{transition:none!important;scroll-behavior:auto!important}
 }
 
-/* Portrait viewport containment — shared by Malo Po Malo and Khacha Khacha.
+/* Portrait viewport containment - shared by Malo Po Malo and Khacha Khacha.
    Keep intentional sideways scrolling inside lesson tabs, navigation and tables. */
 @media (max-width: 850px) {
   /* A plain 1fr track has an automatic intrinsic minimum and can be widened

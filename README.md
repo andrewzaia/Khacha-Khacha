@@ -43,7 +43,7 @@ The **Level 1 Testing** section includes a 100-question assessment covering all 
 2. Select **Level 1 (Beginner)**, then choose a lesson, starting with the **Alphabet** if you're completely new.
 3. Work through the **Reference cards** and reveal their answers.
 4. Try a **Quick quiz** or **Type & practise** to reinforce what you've learnt.
-5. Return often — even a few minutes of regular practice can help.
+5. Return often - even a few minutes of regular practice can help.
 
 **Little steps count. Khacha Khacha.**
 
@@ -62,7 +62,7 @@ Roman spellings and English “sounds like” hints are learning aids, not exact
 
 ## Also learning Serbian?
 
-Explore **[Malo po malo — Learn Serbian](https://andrewzaia.github.io/Malo-Po-Malo/)**, the companion website with Beginner, Intermediate and Advanced courses, Latin and Cyrillic practice, and guided conversations.
+Explore **[Malo po malo - Learn Serbian](https://andrewzaia.github.io/Malo-Po-Malo/)**, the companion website with Beginner, Intermediate and Advanced courses, Latin and Cyrillic practice, and guided conversations.
 
 ## About the project
 
