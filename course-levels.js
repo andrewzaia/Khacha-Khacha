@@ -7,8 +7,8 @@
   D.lessons.forEach(lesson=>{if(!lesson.level)lesson.level='beginner';});
   D.levels=[
     {id:'beginner',title:'Beginner',number:1,description:'Letters, first words and simple conversations.'},
-    {id:'intermediate',title:'Intermediate',number:2,description:'Longer sentences and everyday conversations — course in development.'},
-    {id:'advanced',title:'Advanced',number:3,description:'More complex conversations, comprehension and fluency — course in development.'}
+    {id:'intermediate',title:'Intermediate',number:2,description:'Longer sentences and everyday conversations.'},
+    {id:'advanced',title:'Advanced',number:3,description:'More complex conversations, comprehension and fluency.'}
   ];
   D.getLessons=level=>D.lessons.filter(lesson=>lesson.level===level);
 })();
