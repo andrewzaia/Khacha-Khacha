@@ -7,8 +7,8 @@
   <title>Khacha Khacha · Assyrian practice</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23087e8b'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-size='26' font-weight='bold' fill='white'%3EKK%3C/text%3E%3C/svg%3E">
   <link rel="preload" href="syriac.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="styles.css"><script src="data.js" defer></script><script src="course-levels.js" defer></script><script src="pdf-export.js" defer></script><script src="app.js" defer></script><script src="test.js" defer></script>
-  <link rel="stylesheet" href="mobile-responsive.css">
+  <script src="theme.js"></script><link rel="stylesheet" href="styles.css"><script src="data.js" defer></script><script src="course-levels.js" defer></script><script src="pdf-export.js" defer></script><script src="app.js" defer></script><script src="test.js" defer></script>
+  <link rel="stylesheet" href="mobile-responsive.css"><link rel="stylesheet" href="theme.css">
 </head>
 <body>
 <a class="skip-link" href="#workspace">Skip to lesson</a>
@@ -23,7 +23,7 @@
     <div class="sidebar-bottom">Sureth · Untimed lessons, timed tests</div>
   </aside>
   <div class="main-wrap">
-    <header class="topbar"><span class="topbar-label">Your Sureth practice space</span><fieldset class="script-control"><legend class="sr-only">Display script</legend><button type="button" data-script="roman" aria-pressed="true">Roman <span>Aa</span></button><button type="button" data-script="syriac" aria-pressed="false">Syriac <span lang="aii-Syrc">ܐܒ</span></button></fieldset></header>
+    <header class="topbar"><span class="topbar-label">Your Sureth practice space</span><div class="topbar-actions"><fieldset class="script-control"><legend class="sr-only">Display script</legend><button type="button" data-script="roman" aria-pressed="true">Roman <span>Aa</span></button><button type="button" data-script="syriac" aria-pressed="false">Syriac <span lang="aii-Syrc">ܐܒ</span></button></fieldset><button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode"><svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.1A8.5 8.5 0 0 1 9.9 3.5 8.5 8.5 0 1 0 20.5 14.1Z"/></svg><svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg></button></div></header>
     <main id="workspace" tabindex="-1">
       <div class="lesson-heading"><div><div id="lesson-kicker" class="eyebrow"></div><h1 id="lesson-title"></h1><p id="lesson-description"></p></div><span id="lesson-count" class="count-badge"></span></div>
       <div class="mode-nav" role="tablist" aria-label="Learning mode"><button type="button" role="tab" id="tab-learn" data-mode="learn" aria-controls="mode-content" aria-selected="true">Reference cards</button><button type="button" role="tab" id="tab-quiz" data-mode="quiz" aria-controls="mode-content" aria-selected="false" tabindex="-1">Quick quiz <span>5</span></button><button type="button" role="tab" id="tab-practice" data-mode="practice" aria-controls="mode-content" aria-selected="false" tabindex="-1">Type & practise</button></div>
