@@ -61,8 +61,11 @@
 .level-picker{margin-top:4px;min-width:0}
 .level-picker .note-label{font-weight:650}
 .level-buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px;border:1px solid var(--border);border-radius:10px;background:#f5f7fc;min-width:0}
-.level-buttons button{min-width:0;width:100%;min-height:42px;border:0;border-radius:7px;background:transparent;color:var(--muted);padding:10px 3px;font-size:.85rem;line-height:1.25;font-weight:650;white-space:nowrap}
+.level-buttons button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;width:100%;min-height:52px;border:0;border-radius:7px;background:transparent;color:var(--muted);padding:8px 3px;font-size:.85rem;line-height:1.25;font-weight:650;white-space:nowrap}
 .level-buttons button[aria-pressed=true]{background:var(--blue);color:#fff}
+.level-soon{display:block;font-size:.64rem;line-height:1;letter-spacing:.035em;color:#697c92;font-weight:600}
+.level-buttons button[aria-pressed=true] .level-soon{color:#fff;opacity:.92}
+.level-soon[hidden]{display:none}
 .level-buttons button:disabled{opacity:.65}
 .level-picker p{font-size:.8rem;line-height:1.6;color:var(--muted);margin:10px 2px 0}
 .coming-soon-panel{text-align:center;padding-block:52px}
