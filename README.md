@@ -10,7 +10,9 @@ No downloads, installation or account required. Open the site in your browser an
 
 ## What you'll learn
 
-Build a foundation across five beginner lessons:
+The site uses the same compact three-level selector as Malo po Malo: **Level 1 (Beginner)** is available now. **Level 2 (Intermediate)** and **Level 3 (Advanced)** are clearly labelled **Coming soon**; lessons and tests for those levels have not been published yet.
+
+Build a foundation across five currently available beginner lessons:
 
 | Lesson | What you'll practise |
 | --- | --- |
@@ -33,12 +35,12 @@ Lessons introduce words and phrases in both **Syriac script** and **Roman spelli
 
 ### Want a bigger challenge?
 
-The **Testing** section includes a 100-question assessment covering all five lessons, with up to **60 seconds per question**. With a test access word, you can take the challenge, review your responses and download a **PDF** of your results.
+The **Level 1 Testing** section includes a 100-question assessment covering all five beginner lessons, with up to **60 seconds per question**. With a test access word, you can take the challenge, review your responses and download a **PDF** of your results.
 
 ## How to get started
 
 1. **[Visit Khacha Khacha](https://andrewzaia.github.io/Khacha-Khacha/).**
-2. Choose a lesson, starting with the **Alphabet** if you're completely new.
+2. Select **Level 1 (Beginner)**, then choose a lesson, starting with the **Alphabet** if you're completely new.
 3. Work through the **Reference cards** and reveal their answers.
 4. Try a **Quick quiz** or **Type & practise** to reinforce what you've learnt.
 5. Return often — even a few minutes of regular practice can help.
@@ -60,7 +62,7 @@ Roman spellings and English “sounds like” hints are learning aids, not exact
 
 ## Also learning Serbian?
 
-Explore **[Malo po malo — Learn Serbian](https://andrewzaia.github.io/Malo-Po-Malo/)**, the companion website with Beginner and Intermediate courses, Latin and Cyrillic practice, and guided conversations.
+Explore **[Malo po malo — Learn Serbian](https://andrewzaia.github.io/Malo-Po-Malo/)**, the companion website with Beginner, Intermediate and Advanced courses, Latin and Cyrillic practice, and guided conversations.
 
 ## About the project
 
@@ -75,7 +77,7 @@ The website uses static HTML, CSS and JavaScript, with a locally bundled Syriac 
 
 To run locally, clone or download the repository and open `index.html`. If local browser security prevents the font from loading, serve the folder with `python -m http.server 8000` and visit `http://localhost:8000`.
 
-Lesson content and practice questions are defined in `data.js`. The timed-test access word is configured client-side and is not secure authentication.
+Existing beginner content and practice questions are defined in `data.js`. The new `course-levels.js` file holds level metadata. Future level modules can add level-specific lessons and question banks before `app.js` starts, automatically enabling their corresponding level selector. No unfinished lesson banks are bundled with the coming-soon levels. The timed-test access word is configured client-side and is not secure authentication.
 
 The bundled font is distributed with its licence in `FONT-LICENSE.txt`.
 
