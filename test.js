@@ -13,18 +13,22 @@
   const formatDuration=ms=>{const seconds=Math.round(ms/1000);return Math.floor(seconds/60)+'m '+String(seconds%60).padStart(2,'0')+'s';};
   const display=(question,value)=>question.optionsScript==='display'&&run.script==='syriac'?D.toSyriac(value):value;
   const answerLanguage=question=>question.optionsScript==='english'?'en':'aii';
-  function drawQuestions() {
-    // Equal coverage: twenty distinct multiple-choice questions from each bank.
-    return shuffle(D.lessons.flatMap(l=>{
+  function drawQuestions(level) {
+    const lessons=shuffle(D.getLessons(level));
+    if(!lessons.length)throw new Error('This level has no test questions yet');
+    const base=Math.floor(TEST_SIZE/lessons.length),extra=TEST_SIZE%lessons.length;
+    return shuffle(lessons.flatMap((l,i)=>{
       const bank=D.quiz[l.id].map(r=>({id:r[4].id,topic:l.id,prompt:r[0],answer:r[1],options:[r[1],...r[2]],explanation:r[3],optionsScript:r[4].optionsScript,category:r[4].category}));
-      return D.createQuestionDeck(bank).draw(20).map(q=>({...q,options:shuffle(q.options)}));
+      return D.createQuestionDeck(bank).draw(base+(i<extra?1:0)).map(q=>({...q,options:shuffle(q.options)}));
     }));
   }
   function start(word) {
     if(isRunning())return false;
     if(typeof word!=='string'||word.trim().toLowerCase()!==TEST_WORD)return false;
+    const level=A.readState().level;
+    if(!D.getLessons(level).length)return false;
     const now=Date.now();
-    run={questions:drawQuestions(),results:[],index:0,selection:null,script:A.readState().script,startedAt:now,questionStartedAt:now,deadline:now+QUESTION_MS,completedAt:null,endedEarly:false,notice:''};
+    run={level,questions:drawQuestions(level),results:[],index:0,selection:null,script:A.readState().script,startedAt:now,questionStartedAt:now,deadline:now+QUESTION_MS,completedAt:null,endedEarly:false,notice:''};
     confirmEnd=false;filter='all';
     if(clock!==null)window.clearInterval(clock);
     clock=window.setInterval(syncClock,250);
@@ -90,8 +94,8 @@
   function report() {
     if(!isComplete())throw new Error('Complete the test before exporting results.');
     const counts={correct:0,incorrect:0,missed:0};run.results.forEach(r=>counts[r.status]++);
-    const topics=D.lessons.map(l=>{const rows=run.results.filter(r=>r.topic===l.id);return {id:l.id,title:l.title,total:rows.length,correct:rows.filter(r=>r.status==='correct').length,incorrect:rows.filter(r=>r.status==='incorrect').length,missed:rows.filter(r=>r.status==='missed').length};});
-    return {title:'Khacha Khacha - Assyrian test',total:TEST_SIZE,score:counts.correct,percent:counts.correct,counts,topics,script:run.script,startedAt:run.startedAt,completedAt:run.completedAt,durationMs:run.completedAt-run.startedAt,endedEarly:run.endedEarly,results:run.results.map(r=>({...r}))};
+    const topics=D.getLessons(run.level).map(l=>{const rows=run.results.filter(r=>r.topic===l.id);return {id:l.id,title:l.title,total:rows.length,correct:rows.filter(r=>r.status==='correct').length,incorrect:rows.filter(r=>r.status==='incorrect').length,missed:rows.filter(r=>r.status==='missed').length};});
+    return {title:'Khacha Khacha - '+D.levels.find(l=>l.id===run.level).title+' Assyrian test',level:run.level,total:TEST_SIZE,score:counts.correct,percent:counts.correct,counts,topics,script:run.script,startedAt:run.startedAt,completedAt:run.completedAt,durationMs:run.completedAt-run.startedAt,endedEarly:run.endedEarly,results:run.results.map(r=>({...r}))};
   }
   function focusQuestion(){ $('test-question')?.focus(); }
   function render() {
@@ -103,7 +107,7 @@
     updateTimer();
   }
   function renderGate() {
-    $('test-content').innerHTML=`<div class="exercise-shell test-gate"><div class="eyebrow">A BEGINNER CHECK-IN</div><h2>Ready for a longer round?</h2><p>Try 100 multiple-choice questions drawn from the existing quiz bank: 20 from each lesson, mixed into a random order.</p><ul class="test-rules"><li><strong>One minute per question.</strong> Unused time does not carry over.</li><li><strong>Time runs out?</strong> That question is marked missed and the next begins automatically.</li><li><strong>One submitted answer.</strong> No hints or answer reveals during the test.</li><li><strong>Results straight away.</strong> Review every answer and download a PDF.</li></ul><p class="test-small-note">Allow up to 100 minutes. Keep this page open: the timer continues in the background, and refreshing resets the test.</p><form id="test-start-form"><label class="input-label" for="test-password">Test password</label><input id="test-password" class="answer-input" type="password" autocomplete="off" required aria-describedby="test-password-error"><p id="test-password-error" class="test-error" role="alert"></p><div class="test-buttons"><button type="submit" class="primary-button">Start the 100-question test</button><button type="button" class="small-button" data-mode="learn">Back to lessons</button></div></form><p class="test-small-note gate-note">The password is a simple access word, not a secure login.</p></div>`;
+    $('test-content').innerHTML=`<div class="exercise-shell test-gate"><div class="eyebrow">${D.levels.find(l=>l.id===A.readState().level).title.toUpperCase()} CHECK-IN</div><h2>Ready for a longer round?</h2><p>Try 100 multiple-choice questions from the selected level, mixed across its ${D.getLessons(A.readState().level).length} lessons.</p><ul class="test-rules"><li><strong>One minute per question.</strong> Unused time does not carry over.</li><li><strong>Time runs out?</strong> That question is marked missed and the next begins automatically.</li><li><strong>One submitted answer.</strong> No hints or answer reveals during the test.</li><li><strong>Results straight away.</strong> Review every answer and download a PDF.</li></ul><p class="test-small-note">Allow up to 100 minutes. Keep this page open: the timer continues in the background, and refreshing resets the test.</p><form id="test-start-form"><label class="input-label" for="test-password">Test password</label><input id="test-password" class="answer-input" type="password" autocomplete="off" required aria-describedby="test-password-error"><p id="test-password-error" class="test-error" role="alert"></p><div class="test-buttons"><button type="submit" class="primary-button">Start the 100-question test</button><button type="button" class="small-button" data-mode="learn">Back to lessons</button></div></form><p class="test-small-note gate-note">The password is a simple access word, not a secure login.</p></div>`;
   }
   function renderResults() {
     const r=report(),rows=filter==='review'?r.results.filter(x=>x.status!=='correct'):r.results;

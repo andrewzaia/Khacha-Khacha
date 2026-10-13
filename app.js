@@ -1,11 +1,26 @@
 (function () {
   'use strict';
   const D = window.Assyrian;
-  const state = {lesson:'alphabet',mode:'learn',script:'roman',selected:0,revealed:false,session:null};
+  const STORAGE_KEY='khacha-khacha-course-level-v1';
+  let savedLevel='beginner';
+  try{const stored=localStorage.getItem(STORAGE_KEY);if(D.levels.some(l=>l.id===stored))savedLevel=stored;}catch{}
+  const state = {level:savedLevel,lesson:'alphabet',mode:'learn',script:'roman',selected:0,revealed:false,session:null};
   const $ = id => document.getElementById(id);
   const escape = value => String(value).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])).replace(/[\u0700-\u074f][\u0700-\u074f\u0300-\u036f]*(?: +[\u0700-\u074f][\u0700-\u074f\u0300-\u036f]*)*/g,t=>'<bdi class="syriac-run" lang="aii-Syrc" dir="rtl">'+t+'</bdi>');
   const sr = text => state.script==='syriac'?D.toSyriac(text):text;
   const lesson = () => D.lessons.find(l=>l.id===state.lesson);
+  const activeLessons=()=>D.getLessons(state.level);
+  const currentLevel=()=>D.levels.find(l=>l.id===state.level);
+  const levelIsReady=()=>activeLessons().length>0;
+  function setLevel(id){
+    if(window.AssyrianTest?.isRunning())return;
+    if(!D.levels.some(l=>l.id===id))throw new Error('Unknown level');
+    state.level=id;state.lesson=activeLessons()[0]?.id||null;
+    if(window.AssyrianTest?.reset)window.AssyrianTest.reset();
+    state.mode='learn';state.selected=0;state.revealed=false;state.session=null;
+    try{localStorage.setItem(STORAGE_KEY,id);}catch{}
+    render();
+  }
   const shuffle = items => { const result=[...items]; for(let i=result.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[result[i],result[j]]=[result[j],result[i]];} return result; };
   function cards() { return [...lesson().cards]; }
   const decks = new Map();
@@ -20,23 +35,28 @@
   function startSession(mixed=false) {
     let questions;
     if(mixed){
-      const extras=new Set(shuffle(D.lessons.map(l=>l.id)).slice(0,3));
-      questions=shuffle(D.lessons.flatMap(l=>takeQuestions(l.id,'practice',extras.has(l.id)?2:1)));
+      const lessons=shuffle(activeLessons()).slice(0,8);
+      const base=Math.floor(8/lessons.length),extra=8%lessons.length;
+      questions=shuffle(lessons.flatMap((l,i)=>takeQuestions(l.id,'practice',base+(i<extra?1:0))));
     }
     else questions=takeQuestions(state.lesson,state.mode,state.mode==='quiz'?5:8);
     state.session={questions,index:0,results:[],selected:null,status:null,input:'',attempts:0,hinted:false,showHint:false,resolved:false,mixed};
   }
   function setLesson(id) {
     if(window.AssyrianTest?.isRunning())return;
-    if(!D.lessons.some(l=>l.id===id)) throw new Error('Unknown lesson');
+    const target=D.lessons.find(l=>l.id===id);
+    if(!target) throw new Error('Unknown lesson');
+    state.level=target.level;
     if(state.mode==='test')state.mode='learn';
     state.lesson=id;state.selected=0;state.revealed=false;
     if(state.mode!=='learn')startSession();
+    try{localStorage.setItem(STORAGE_KEY,state.level);}catch{}
     render();
   }
   function setMode(mode,mixed=false) {
     if(window.AssyrianTest?.isRunning()&&mode!=='test')return;
     if(!['learn','quiz','practice','test'].includes(mode)) throw new Error('Unknown mode');
+    if(!levelIsReady()&&mode!=='learn')throw new Error('This level is coming soon');
     state.mode=mode;
     if(mode!=='learn'&&mode!=='test')startSession(mixed);
     render();
@@ -44,22 +64,44 @@
   function setScript(script) {
     if(window.AssyrianTest?.isRunning())return;
     if(!['roman','syriac'].includes(script)) throw new Error('Unknown script');
-    const selected=cards()[state.selected]?.id;
+    const selected=levelIsReady()?cards()[state.selected]?.id:null;
     state.script=script;
-    if(state.mode==='learn')state.selected=Math.max(0,cards().findIndex(c=>c.id===selected));
+    if(state.mode==='learn'&&levelIsReady())state.selected=Math.max(0,cards().findIndex(c=>c.id===selected));
     render();
   }
   function render() {
-    const l=lesson();
-    const testing=state.mode==='test',running=!!window.AssyrianTest?.isRunning();
-    document.querySelector('.mode-nav').hidden=testing;
-    document.querySelector('.lesson-tip').hidden=testing;
+    const ready=levelIsReady(),l=ready?lesson():null,level=currentLevel();
+    const testing=ready&&state.mode==='test',running=!!window.AssyrianTest?.isRunning();
+    document.querySelector('.mode-nav').hidden=testing||!ready;
+    document.querySelector('.lesson-tip').hidden=testing||!ready;
+    document.querySelector('.nav-label').hidden=!ready;
+    $('testing-link').hidden=!ready;
+    document.querySelector('.daily-note').hidden=!ready;
+    document.querySelector('.mobile-mix')?.toggleAttribute('hidden',!ready);
     $('mode-content').hidden=testing;
     $('test-content').hidden=!testing;
     $('testing-link').classList.toggle('active',testing);
     if(testing)$('testing-link').setAttribute('aria-current','page');else $('testing-link').removeAttribute('aria-current');
-    $('lesson-nav').innerHTML=D.lessons.map((item,i)=>`<button type="button" data-lesson="${item.id}" class="lesson-link ${item.id===state.lesson?'active':''}" ${item.id===state.lesson?'aria-current="page"':''}><span class="lesson-number">${String(i+1).padStart(2,'0')}</span><span><strong>${escape(item.title)}</strong><small>${escape(item.short)}</small></span></button>`).join('');
-    $('lesson-kicker').innerHTML=`Lesson ${D.lessons.indexOf(l)+1} of 5 <span aria-hidden="true"> / </span> <span lang="${state.script==='syriac'?'aii-Syrc':'en'}">${escape(sr(l.assyrian))}</span>`;
+    $('lesson-nav').innerHTML=activeLessons().map((item,i)=>`<button type="button" data-lesson="${item.id}" class="lesson-link ${item.id===state.lesson?'active':''}" ${item.id===state.lesson?'aria-current="page"':''}><span class="lesson-number">${String(i+1).padStart(2,'0')}</span><span><strong>${escape(item.title)}</strong><small>${escape(item.short)}</small></span></button>`).join('');
+    document.querySelectorAll('.level-buttons [data-level]').forEach(b=>{
+      const item=D.levels.find(item=>item.id===b.dataset.level),available=D.getLessons(item.id).length>0;
+      b.setAttribute('aria-pressed',String(b.dataset.level===state.level));
+      b.setAttribute('aria-label','Level '+item.number+', '+item.title+(available?'':', coming soon'));
+      b.title=item.title+(available?'':' — Coming soon');
+      const soon=b.querySelector('.level-soon');if(soon)soon.hidden=available;
+      b.disabled=running;
+    });
+    $('level-description').textContent=level.title+' · '+(ready?level.description:'Coming soon. '+level.description);
+    if(!ready){
+      $('lesson-kicker').textContent='LEVEL '+level.number+' · '+level.title.toUpperCase();
+      $('lesson-title').textContent=level.title+' — Coming soon';
+      $('lesson-description').textContent=level.description;
+      $('lesson-count').textContent='Coming soon';
+      $('mode-content').setAttribute('aria-labelledby','lesson-title');
+      $('mode-content').innerHTML=`<div class="exercise-shell coming-soon-panel"><span class="coming-soon-icon" aria-hidden="true">⌛</span><div class="eyebrow">LEVEL ${level.number} · ${escape(level.title.toUpperCase())}</div><h2>Coming soon</h2><p>We're preparing the ${escape(level.title.toLowerCase())} Sureth course. Its lessons and assessments aren't available yet.</p><p>In the meantime, keep practising the beginner material at your own pace.</p><button type="button" class="primary-button" data-level="beginner">Return to Level 1</button></div>`;
+      return;
+    }
+    $('lesson-kicker').innerHTML=`${level.title} · Lesson ${activeLessons().indexOf(l)+1} of ${activeLessons().length} <span aria-hidden="true"> / </span> <span lang="${state.script==='syriac'?'aii-Syrc':'en'}">${escape(sr(l.assyrian))}</span>`;
     $('lesson-title').textContent=l.title;
     $('lesson-description').textContent=l.description;
     $('lesson-count').textContent=l.cards.length+' cards · '+D.poolCounts[l.id].quiz+' quiz questions';
@@ -70,9 +112,9 @@
     $('mode-content').setAttribute('aria-labelledby','tab-'+state.mode);
     if(testing){
       document.querySelectorAll('[data-lesson]').forEach(b=>{b.classList.remove('active');b.removeAttribute('aria-current');});
-      $('lesson-kicker').textContent='MIXED BEGINNER TEST';
+      $('lesson-kicker').textContent='MIXED '+level.title.toUpperCase()+' TEST';
       $('lesson-title').textContent='A little of everything.';
-      $('lesson-description').textContent='100 questions across all five lessons. One minute for each answer.';
+      $('lesson-description').textContent='100 questions across '+activeLessons().length+' '+level.title.toLowerCase()+' lessons. One minute for each answer.';
       $('lesson-count').textContent='100 questions';
       window.AssyrianTest?.render();
     }else if(state.mode==='learn')renderLearn();else renderExercise();
@@ -159,7 +201,7 @@
   }
   function selectCard(index) { if(!Number.isInteger(index)||index<0||index>=cards().length)throw new Error('Invalid card');state.selected=index;state.revealed=false;renderLearn(); }
   function doAction(action) {
-    if(action==='open-test'){setMode('test');return;}
+    if(action==='open-test'){if(levelIsReady())setMode('test');return;}
     if(action==='reveal'){state.revealed=!state.revealed;renderLearn();document.querySelector('[data-action="reveal"]')?.focus();}
     if(action==='next-card'||action==='previous-card'){selectCard((state.selected+(action==='next-card'?1:-1)+cards().length)%cards().length);document.querySelector(`[data-action="${action}"]`)?.focus();}
     if(action==='next-question')nextQuestion();
@@ -170,7 +212,8 @@
   }
   document.addEventListener('click',event=>{
     const b=event.target.closest('button');if(!b||b.disabled)return;
-    if(b.dataset.lesson){setLesson(b.dataset.lesson);document.querySelector(`[data-lesson="${b.dataset.lesson}"]`)?.focus();}
+    if(b.dataset.level){setLevel(b.dataset.level);document.querySelector(`[data-level="${b.dataset.level}"]`)?.focus();}
+    else if(b.dataset.lesson){setLesson(b.dataset.lesson);document.querySelector(`[data-lesson="${b.dataset.lesson}"]`)?.focus();}
     else if(b.dataset.script){setScript(b.dataset.script);document.querySelector(`[data-script="${b.dataset.script}"]`)?.focus();}
     else if(b.dataset.mode){setMode(b.dataset.mode);$('tab-'+b.dataset.mode)?.focus();}
     else if(b.dataset.card!==undefined){selectCard(Number(b.dataset.card));document.querySelector(`[data-card="${b.dataset.card}"]`)?.focus();}
@@ -186,22 +229,22 @@
     index=event.key==='Home'?0:event.key==='End'?2:(index+(event.key==='ArrowRight'?1:-1)+3)%3;
     setMode(modes[index]);$('tab-'+modes[index]).focus();
   });
-  document.querySelector('.brand').addEventListener('click',event=>{event.preventDefault();if(window.AssyrianTest?.isRunning())return;state.mode='learn';setLesson('alphabet');});
+  document.querySelector('.brand').addEventListener('click',event=>{event.preventDefault();if(window.AssyrianTest?.isRunning())return;setLevel('beginner');});
   const daily=document.querySelector('.daily-note');
   daily.insertAdjacentHTML('beforeend','<button type="button" class="small-button" data-action="daily-mix" style="margin-top:17px;width:100%">Practise a daily mix</button>');
   document.querySelector('.topbar').insertAdjacentHTML('beforeend','<button type="button" class="small-button mobile-mix" data-action="daily-mix">Daily mix</button>');
   render();
   // The same actions power both the interface and optional browser agent tools.
   const publicAPI={
-    readState(){const s=state.session;if(state.mode==='test')return {lesson:null,mode:'test',script:state.script,card:null,revealed:false,question:null,test:window.AssyrianTest?.readState(),completed:!!window.AssyrianTest?.isComplete()};return {lesson:state.lesson,mode:state.mode,script:state.script,card:state.mode==='learn'?cards()[state.selected].id:null,revealed:state.revealed,question:s&&state.mode!=='learn'&&s.index<s.questions.length?{id:q().id,topic:q().topic,category:q().category,optionsScript:q().optionsScript,prompt:q().prompt,index:s.index,total:s.questions.length,resolved:s.resolved}:null,completed:!!s&&s.index>=s.questions.length};},
-    setLesson,setMode,setScript,selectCard,submitAnswer,chooseOption,nextQuestion,doAction,render
+    readState(){const s=state.session;if(!levelIsReady())return {level:state.level,available:false,lesson:null,mode:'learn',script:state.script,card:null,revealed:false,question:null,completed:false};if(state.mode==='test')return {level:state.level,available:true,lesson:null,mode:'test',script:state.script,card:null,revealed:false,question:null,test:window.AssyrianTest?.readState(),completed:!!window.AssyrianTest?.isComplete()};return {level:state.level,available:true,lesson:state.lesson,mode:state.mode,script:state.script,card:state.mode==='learn'?cards()[state.selected].id:null,revealed:state.revealed,question:s&&state.mode!=='learn'&&s.index<s.questions.length?{id:q().id,topic:q().topic,category:q().category,optionsScript:q().optionsScript,prompt:q().prompt,index:s.index,total:s.questions.length,resolved:s.resolved}:null,completed:!!s&&s.index>=s.questions.length};},
+    setLevel,setLesson,setMode,setScript,selectCard,submitAnswer,chooseOption,nextQuestion,doAction,render
   };
   window.AssyrianPractice=publicAPI;
   const context=document.modelContext;
   if(context?.registerTool){const lifecycle=new AbortController();window.addEventListener('pagehide',()=>lifecycle.abort(),{once:true});
     const definitions=[
       {name:'read_assyrian_practice',description:'Read the current Assyrian lesson and practice state without changing it.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true,untrustedContentHint:false},execute(input){if(!input||Object.keys(input).length)throw new Error('No input fields expected');return publicAPI.readState();}},
-      {name:'start_assyrian_lesson',description:'Open a beginner Assyrian lesson in reference, quiz or typing mode. Starting a quiz or practice resets the current round.',inputSchema:{type:'object',properties:{lesson:{type:'string',enum:D.lessons.map(l=>l.id)},mode:{type:'string',enum:['learn','quiz','practice']}},required:['lesson','mode'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute(input){if(window.AssyrianTest?.isRunning())throw new Error('Finish the active test before opening a lesson');if(!input||!D.lessons.some(l=>l.id===input.lesson)||!['learn','quiz','practice'].includes(input.mode)||Object.keys(input).some(k=>!['lesson','mode'].includes(k)))throw new Error('Choose a valid lesson and mode');state.mode='learn';setLesson(input.lesson);setMode(input.mode);return publicAPI.readState();}},
+      {name:'start_assyrian_lesson',description:'Open an available Assyrian lesson in reference, quiz or typing mode. Starting a quiz or practice resets the current round.',inputSchema:{type:'object',properties:{lesson:{type:'string',enum:D.lessons.map(l=>l.id)},mode:{type:'string',enum:['learn','quiz','practice']}},required:['lesson','mode'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute(input){if(window.AssyrianTest?.isRunning())throw new Error('Finish the active test before opening a lesson');if(!input||!D.lessons.some(l=>l.id===input.lesson)||!['learn','quiz','practice'].includes(input.mode)||Object.keys(input).some(k=>!['lesson','mode'].includes(k)))throw new Error('Choose a valid lesson and mode');state.mode='learn';setLesson(input.lesson);setMode(input.mode);return publicAPI.readState();}},
       {name:'check_assyrian_practice_answer',description:'Submit a typed answer to the current typing question and return immediate feedback. Does not advance to the next question.',inputSchema:{type:'object',properties:{answer:{type:'string'}},required:['answer'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute(input){if(!input||typeof input.answer!=='string'||Object.keys(input).some(k=>k!=='answer'))throw new Error('Provide answer text');if(state.mode!=='practice'||!state.session||state.session.index>=state.session.questions.length||state.session.resolved)throw new Error('Open an unanswered typing question first');return submitAnswer(input.answer);}}
     ];
     definitions.forEach(tool=>{try{Promise.resolve(context.registerTool(tool,{signal:lifecycle.signal})).catch(()=>{});}catch{}});
