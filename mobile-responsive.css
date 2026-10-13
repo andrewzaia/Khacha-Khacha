@@ -214,8 +214,6 @@ button,input,select,textarea{max-width:100%}
   .script-control,
   .script-control button { min-width: 0; }
   .level-picker { width: 100%; max-width: 100%; }
-  .level-buttons { flex-wrap: wrap; }
-  .level-buttons > button { flex: 1 1 112px; }
   .test-table-wrap { margin-inline: 0; padding-inline: 0; }
   .test-answers legend,
   .test-review-body,
