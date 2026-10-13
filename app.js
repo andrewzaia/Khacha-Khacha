@@ -16,6 +16,7 @@
     if(window.AssyrianTest?.isRunning())return;
     if(!D.levels.some(l=>l.id===id))throw new Error('Unknown level');
     state.level=id;state.lesson=activeLessons()[0]?.id||null;
+    if(window.AssyrianTest?.reset)window.AssyrianTest.reset();
     state.mode='learn';state.selected=0;state.revealed=false;state.session=null;
     try{localStorage.setItem(STORAGE_KEY,id);}catch{}
     render();
@@ -82,7 +83,14 @@
     $('testing-link').classList.toggle('active',testing);
     if(testing)$('testing-link').setAttribute('aria-current','page');else $('testing-link').removeAttribute('aria-current');
     $('lesson-nav').innerHTML=activeLessons().map((item,i)=>`<button type="button" data-lesson="${item.id}" class="lesson-link ${item.id===state.lesson?'active':''}" ${item.id===state.lesson?'aria-current="page"':''}><span class="lesson-number">${String(i+1).padStart(2,'0')}</span><span><strong>${escape(item.title)}</strong><small>${escape(item.short)}</small></span></button>`).join('');
-    document.querySelectorAll('[data-level]').forEach(b=>{b.setAttribute('aria-pressed',String(b.dataset.level===state.level));b.disabled=running;});
+    document.querySelectorAll('.level-buttons [data-level]').forEach(b=>{
+      const item=D.levels.find(item=>item.id===b.dataset.level),available=D.getLessons(item.id).length>0;
+      b.setAttribute('aria-pressed',String(b.dataset.level===state.level));
+      b.setAttribute('aria-label','Level '+item.number+', '+item.title+(available?'':', coming soon'));
+      b.title=item.title+(available?'':' — Coming soon');
+      const soon=b.querySelector('.level-soon');if(soon)soon.hidden=available;
+      b.disabled=running;
+    });
     $('level-description').textContent=level.title+' · '+(ready?level.description:'Coming soon. '+level.description);
     if(!ready){
       $('lesson-kicker').textContent='LEVEL '+level.number+' · '+level.title.toUpperCase();
