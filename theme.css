@@ -177,3 +177,12 @@
 @media (max-width: 600px) {
   :root[data-theme="dark"] .topbar { background: rgba(23,35,55,.96); }
 }
+
+/* Preserve the compact mobile lesson navigation in dark mode. */
+@media (max-width: 850px) {
+  :root[data-theme="dark"] .lesson-link.active .lesson-number {
+    background: transparent; border-color: transparent; color: var(--blue);
+  }
+}
+:root[data-theme="dark"] .level-soon { color: var(--muted); }
+:root[data-theme="dark"] .level-buttons button[aria-pressed="true"] .level-soon { color: #fff; }
